@@ -22,8 +22,12 @@ function computerPlay() {
 
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
+    const results = document.querySelector('.results') ;
+    let round_result = document.createElement('p') ;
     if (playerSelection === computerSelection) {
-        console.log("You Tied! " + playerSelection + " ties with " + computerSelection);
+        
+        round_result.textContent = "You Tied! " + playerSelection + " ties with " + computerSelection;
+        results.appendChild(round_result) ;
         return 0;
     } else if (playerSelection > computerSelection) {
         // the player has scissors and computer has paper (P wins) or rock (C wins)
@@ -31,10 +35,12 @@ function playRound(playerSelection, computerSelection) {
         // the player has rock and computer has paper (C wins)
         // the only way for the player to win is if the computer has paper and player has scissors
         if (playerSelection === "scissors" && computerSelection === "paper") {
-            console.log("You Win! " + playerSelection + " beats " + computerSelection);
+            round_result.textContent = "You Win! " + playerSelection + " beats " + computerSelection;
+            results.appendChild(round_result) ;
             return 1;
         } else {
-            console.log("You Lose! " + computerSelection + " beats " + playerSelection);
+            round_result.textContent = "You Lose! " + computerSelection + " beats " + playerSelection;
+            results.appendChild(round_result) ;
             return -1;
         }
     } else {
@@ -43,25 +49,43 @@ function playRound(playerSelection, computerSelection) {
         // the player has rock and the computer has scissors (P wins)
         // the only way for the computer to win is if the player has paper and computer has scissors
         if (computerSelection === "scissors" && playerSelection === "paper") {
-            console.log("You Lose! " + computerSelection + " beats " + playerSelection);
+            round_result.textContent = "You Lose! " + computerSelection + " beats " + playerSelection;
+            results.appendChild(round_result) ;
             return -1;
         } else {
-            console.log("You Win! " + playerSelection + " beats " + computerSelection);
+            round_result.textContent = "You Win! " + playerSelection + " beats " + computerSelection;
+            results.appendChild(round_result) ;
             return 1;
         }
     }
 }
 
 function game() {
-    let running_total = 0;
-    for (let i=0; i < 5; i++) {
-        let playerSelection = prompt("What is your choice? Type 'rock', 'paper', or 'scissors'","rock");
+    const results = document.querySelector('.results') ;
+    /*for (let i=0; i < 5; i++) {
+        let playerSelection = this.classList[0] ;
         let computerSelection = computerPlay();
         running_total += playRound(playerSelection, computerSelection);
-    }
-    if (running_total > 0) {
-        alert("Great job, you beat the computer!!");
+    }*/
+    let playerSelection = this.classList[0] ;
+    let computerSelection = computerPlay();
+    running_total += playRound(playerSelection, computerSelection);
+    if (numTimes === 4) {
+        let finalResult = document.createElement('h2') ;
+        if (running_total > 0) {
+            finalResult.textContent = "Great job, you beat the computer!!";
+        } else {
+            finalResult.textContent = "Better luck next time...";
+        }
+        results.appendChild(finalResult) ;
+        numTimes = 0;
+        running_total = 0;
     } else {
-        alert("Better luck next time...");
+        numTimes++;
     }
 }
+
+let numTimes = 0 ;
+let running_total = 0 ;
+const buttons = document.querySelectorAll("button") ;
+buttons.forEach(button => button.addEventListener('click', game)) ;
